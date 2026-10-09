@@ -448,9 +448,11 @@ document.addEventListener('click', e => {
         },function(){clearAdminToken();done(false,'اتصال به سرور برقرار نشد')});
         return;
       }
+      var code=d&&typeof d==='object'?(d.error_code||d.code||''):'';
       if(res.status===429)done(false,'تلاش‌های زیاد بود؛ چند دقیقه بعد دوباره امتحان کنید');
-      else if(res.status===400||res.status===401||res.status===422)done(false,'رمز عبور اشتباه است');
-      else done(false,'ورود انجام نشد ('+res.status+')');
+      else if(code==='invalid_credentials')done(false,'رمز عبور اشتباه است');
+      else if(code==='email_not_confirmed')done(false,'ایمیل این کاربر در Supabase تأیید نشده است (Auto Confirm)');
+      else done(false,'ورود انجام نشد: '+(code||res.status)+(d&&d.msg?' — '+d.msg:''));
     },function(){done(false,'اتصال به سرور برقرار نشد')});
   }
 
