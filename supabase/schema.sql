@@ -16,6 +16,7 @@ create table if not exists private.app_config (
 
 -- >>> The ONLY admin account. Must be exactly the e-mail of the user you
 -- >>> created in Authentication > Users.
+<<<<<<< HEAD
 -- >>> Replace CHANGE-ME@example.com with that e-mail BEFORE the first run
 -- >>> (do not commit your real e-mail to a public repository).
 -- >>> Re-running this file never overwrites an existing value. To change the
@@ -23,6 +24,11 @@ create table if not exists private.app_config (
 insert into private.app_config (key, value)
 values ('admin_email', 'CHANGE-ME@example.com')
 on conflict (key) do nothing;
+=======
+insert into private.app_config (key, value)
+values ('admin_email', 'mhmdsammtyy466@gmail.com')
+on conflict (key) do update set value = excluded.value;
+>>>>>>> 150194eadc1104479a7c0205939f6ae9d9973594
 
 create table if not exists private.rate_limits (
   k  text primary key,
@@ -66,6 +72,7 @@ create table if not exists public.projects (
   created_at timestamptz not null default now()
 );
 
+<<<<<<< HEAD
 -- توضیح کوتاه و لینک نمونه‌کار (برای نصب‌های قبلی: migration-portfolio.sql)
 alter table public.projects add column if not exists description text;
 alter table public.projects add column if not exists url text;
@@ -81,6 +88,8 @@ begin
   end if;
 end $$;
 
+=======
+>>>>>>> 150194eadc1104479a7c0205939f6ae9d9973594
 create table if not exists public.project_images (
   rid        bigint generated always as identity primary key,
   project_id uuid not null references public.projects (id) on delete cascade,
@@ -354,6 +363,7 @@ create policy "admin manages project photos" on storage.objects
   using      (bucket_id = 'projects' and public.is_admin())
   with check (bucket_id = 'projects' and public.is_admin());
 
+<<<<<<< HEAD
 -- ---------------------------------------------------------------------
 -- 6) Project comments (نظرات نمونه‌کارها)
 -- ---------------------------------------------------------------------
@@ -428,5 +438,7 @@ $$;
 grant execute on function public.add_project_comment(uuid, text, text, text) to anon, authenticated;
 
 
+=======
+>>>>>>> 150194eadc1104479a7c0205939f6ae9d9973594
 -- make the API pick up the new functions immediately
 notify pgrst, 'reload schema';
